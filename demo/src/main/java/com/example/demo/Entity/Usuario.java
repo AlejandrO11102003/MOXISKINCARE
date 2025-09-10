@@ -1,37 +1,29 @@
 package com.example.demo.Entity;
 
-import lombok.Data;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Id;
+import lombok.Data;
 
 @Entity
 @Data
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IdUsuario;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long IdUsuario;
 
-    @NotNull
-    private String Nombre;
+  private String Nombre;
 
-    @NotNull
-    private String Apellidos;
+  private String Apellidos;
 
-    @NotNull
-    private String Correo;
+  private String Correo;
 
-    @NotNull
-    private String Password;
+  private String Password;
 
-    @NotNull
-    private String Telefono;
+  private String Telefono;
 
-    @NotNull
-    private String Direccion;
+  private String Direccion;
 
-    
 }
