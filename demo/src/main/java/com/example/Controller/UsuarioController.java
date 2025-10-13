@@ -1,4 +1,4 @@
-package com.example.demo.Controller;
+package com.example.Controller;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Entity.Usuario;
-import com.example.demo.Repository.UsuarioRepository;
+import com.example.Entity.Usuario;
+import com.example.Repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/usuarios")

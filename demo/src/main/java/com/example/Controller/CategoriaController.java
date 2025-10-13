@@ -1,4 +1,4 @@
-package com.example.demo.Controller;
+package com.example.Controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Service.CategoriaService;
-import com.example.demo.Entity.Categoria;
+import com.example.Entity.Categoria;
+import com.example.Service.Implementacion.ICategoriaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,32 +21,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 
 public class CategoriaController {
-  private final CategoriaService categoriaService;
+  
+  private final ICategoriaService iCategoriaService;
 
   @GetMapping
   public List<Categoria> listarcategorias() {
-    return categoriaService.listar();
+    return iCategoriaService.listar();
   }
 
   @GetMapping("/{id}")
-  public Categoria getCategoriaById(@PathVariable Long id) {
-    return categoriaService.buscarPorId(id);
+  public Categoria getCategoriaById(@PathVariable Long idCategoria) {
+    return iCategoriaService.buscarPorId(idCategoria);
   }
 
   @PostMapping
   public Categoria createCategoria(@RequestBody Categoria categoria) {
-    return categoriaService.guardar(categoria);
+    return iCategoriaService.guardar(categoria);
   }
 
   @PutMapping("/{id}")
-  public Categoria updateCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
-    categoria.setIdCategoria(id);
-    return categoriaService.guardar(categoria);
+  public Categoria updateCategoria(@PathVariable Long idCategoria, @RequestBody Categoria categoria) {
+    categoria.setIdCategoria(idCategoria);
+    return iCategoriaService.guardar(categoria);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteCategoria(@PathVariable Long id) {
-    categoriaService.eliminar(id);
+  public void deleteCategoria(@PathVariable Long idCategoria) {
+    iCategoriaService.eliminar(idCategoria);
   }
 
 }
