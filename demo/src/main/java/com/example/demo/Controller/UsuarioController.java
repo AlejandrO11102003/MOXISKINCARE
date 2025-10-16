@@ -16,7 +16,7 @@ import com.example.demo.Entity.Usuario;
 import com.example.demo.Repository.UsuarioRepository;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
   @Autowired
