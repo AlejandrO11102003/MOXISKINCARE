@@ -10,5 +10,4 @@ public class HolaController {
     public String user() {
         return "usuarios";
     }
-
 }
