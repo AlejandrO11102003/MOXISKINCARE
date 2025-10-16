@@ -1,7 +1,6 @@
 package com.example.Service.Implementacion;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class ICategoriaService implements CategoriaService {
-  
+
   private final CategoriaRepository categoriaRepository;
 
   @Override
