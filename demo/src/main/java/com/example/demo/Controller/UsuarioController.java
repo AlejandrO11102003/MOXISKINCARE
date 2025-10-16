@@ -19,6 +19,7 @@ import com.example.demo.Repository.UsuarioRepository;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
+  //hola
   @Autowired
   private UsuarioRepository usuarioRepository;
 
