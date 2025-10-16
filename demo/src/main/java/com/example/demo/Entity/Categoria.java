@@ -1,6 +1,6 @@
-package com.example.Entity;
+package com.example.demo.Entity;
 
-import com.example.Enum.TipoPiel;
+import com.example.demo.Enum.TipoPiel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

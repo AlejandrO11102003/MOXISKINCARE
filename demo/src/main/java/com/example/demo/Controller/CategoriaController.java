@@ -1,4 +1,4 @@
-package com.example.Controller;
+package com.example.demo.Controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Entity.Categoria;
-import com.example.Service.Implementacion.ICategoriaService;
+import com.example.demo.Entity.Categoria;
+import com.example.demo.Service.Implementacion.ICategoriaService;
 
 import lombok.RequiredArgsConstructor;
 

@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.Entity.Categoria;
-import com.example.Repository.CategoriaRepository;
 import com.example.Service.CategoriaService;
+import com.example.demo.Entity.Categoria;
+import com.example.demo.Repository.CategoriaRepository;
 
 import lombok.RequiredArgsConstructor;
 
