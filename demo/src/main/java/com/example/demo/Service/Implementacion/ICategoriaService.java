@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class ICategoriaService implements CategoriaService {
-  
+
   private final CategoriaRepository categoriaRepository;
 
   @Override
