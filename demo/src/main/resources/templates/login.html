@@ -2,86 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Login Simple</title>
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #141e30, #d471ae);
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .login-container {
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 10px;
-        width: 300px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      .login-container h2 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 1.5rem;
-      }
-
-      .login-container input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-
-      .login-container button {
-        width: 100%;
-        padding: 10px;
-        background-color: #b36585;
-        border: none;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .login-container button:hover {
-        background-color: #b78cb2;
-      }
-
-      .msg {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 14px;
-      }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css" />
   </head>
+
   <body>
     <div class="login-container">
       <h2>Iniciar Sesión</h2>
-      <input type="text" id="usuario" placeholder="Usuario" />
+      <input type="email" id="correo" placeholder="Correo" />
       <input type="password" id="password" placeholder="Contraseña" />
       <button onclick="login()">Entrar</button>
       <p class="msg" id="mensaje"></p>
     </div>
 
     <script>
-      function login() {
-        const user = document.getElementById("usuario").value;
+      async function login() {
+        const correo = document.getElementById("correo").value;
         const pass = document.getElementById("password").value;
         const mensaje = document.getElementById("mensaje");
+        mensaje.textContent = "";
 
-        const userValido = "moxi";
-        const passValida = "asd";
+        try {
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `correo=${encodeURIComponent(
+              correo
+            )}&password=${encodeURIComponent(pass)}`,
+          });
 
-        if (user === userValido && pass === passValida) {
-          mensaje.style.color = "blue";
-          mensaje.textContent = "Inicio de sesión exitoso";
-        } else {
+          const result = await response.text();
+          if (result === "Login exitoso") {
+            mensaje.style.color = "blue";
+            mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
+            window.location.href = "/usuarios";
+          } else {
+            mensaje.style.color = "red";
+            mensaje.textContent = result;
+          }
+        } catch (error) {
           mensaje.style.color = "red";
-          mensaje.textContent = "Usuario o contraseña incorrecta";
+          mensaje.textContent = "Error al conectar con el servidor.";
         }
       }
     </script>
