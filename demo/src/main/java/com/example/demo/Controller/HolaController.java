@@ -10,4 +10,9 @@ public class HolaController {
     public String cargarpaginaUsuarios() {
         return "usuarios";
     }
+
+    @GetMapping("/index")
+    public String CargarIndex() {
+        return "index";
+    }
 }
