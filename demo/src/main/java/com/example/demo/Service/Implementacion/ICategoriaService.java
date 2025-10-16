@@ -1,11 +1,8 @@
-package com.example.Service.Implementacion;
+package com.example.demo.Service.Implementacion;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
-import com.example.Service.CategoriaService;
+import com.example.demo.Service.CategoriaService;
 import com.example.demo.Entity.Categoria;
 import com.example.demo.Repository.CategoriaRepository;
 
