@@ -25,6 +25,7 @@ public class Categoria {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long idCategoria;
 
+  //atributo nombre
   private String nombre;
   private String descripcion;
   @Enumerated(EnumType.STRING)
