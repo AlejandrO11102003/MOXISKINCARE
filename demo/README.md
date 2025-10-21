@@ -59,12 +59,43 @@ demo/
   dependencias del proyecto, incluyendo Spring Boot, JPA, MySQL Connector/J y
   Lombok.
 
-LINK SLACK: [Slack](https://app.slack.com/client/T09LX7B8SG4/D09M6JQMV6V)
+## Herramientas Utilizadas
 
-LINK TRELLO: [Trello](https://trello.com/b/a4Kg5DRS/moxiskincare)
+- **Lenguaje de Programación:** Java
+- **Framework:** Spring Boot
+- **Base de Datos:** MySQL
+- **ORM:** JPA/Hibernate
+- **Motor de Plantillas:** Thymeleaf
+- **Gestión de Dependencias:** Maven
+- **Control de Versiones:** Git y GitHub
+- **Gestión de Proyectos y Tareas:** Trello, Asana
+- **Comunicación:** Slack
 
-LINK ASANA:
-[Asana](https://app.asana.com/1/966364834832463/project/1211701303117383/timeline/1211701367649178)
+## Proceso de Desarrollo
 
-LINK GITHUB: [Github](https://github.com/AlejandrO11102003/MOXISKINCARE.git)
+El desarrollo de MOXISKINCARE sigue una metodología ágil, utilizando las siguientes prácticas:
 
+1.  **Planificación:** Las tareas y sprints se gestionan a través de nuestros tableros en Trello y Asana.
+2.  **Comunicación:** La comunicación del equipo se centraliza en nuestro canal de Slack.
+3.  **Control de Versiones:** Utilizamos Git con un flujo de trabajo basado en ramas. Las nuevas características se desarrollan en ramas separadas (`feature/...`) y se integran en la rama `develop` a través de Pull Requests.
+4.  **Integración y Despliegue:** Una vez que el código es estable en `develop`, se fusiona en la rama `main` para crear una nueva versión (release).
+
+## Gestión de Tareas
+
+Puedes seguir el progreso del proyecto en nuestros tableros:
+
+- **Trello:** [Enlace al tablero de Trello](https://trello.com/b/a4Kg5DRS/moxiskincare)
+- **Asana:** [Enlace al tablero de Asana](https://app.asana.com/1/966364834832463/project/1211701303117383/timeline/1211701367649178)
+
+## Releases
+
+La evidencia de los releases se puede encontrar en la sección de [Releases de GitHub](https://github.com/AlejandrO11102003/MOXISKINCARE/releases) del repositorio.
+
+## Capturas de Pantalla
+
+![Conflicto Merge](<Imagen de WhatsApp 2025-10-20 a las 21.23.50_b9b9a7aa.jpg>)
+
+## Enlaces del Proyecto
+
+- **Repositorio en GitHub:** [Github](https://github.com/AlejandrO11102003/MOXISKINCARE.git)
+- **Canal de Slack:** [Slack](https://app.slack.com/client/T09LX7B8SG4/D09M6JQMV6V)
