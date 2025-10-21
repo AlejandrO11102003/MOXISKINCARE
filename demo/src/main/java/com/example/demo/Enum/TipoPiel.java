@@ -1,4 +1,4 @@
-package com.example.Enum;
+package com.example.demo.Enum;
 
 public enum TipoPiel {
   GRASA,

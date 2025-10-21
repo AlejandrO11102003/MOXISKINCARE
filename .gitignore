@@ -33,3 +33,9 @@ build/
 .vscode/
 .log
 
+.idea/
+*.iml
+out/
+
+.vscode/launch.json
+.vscode/launch.json

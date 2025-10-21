@@ -1,8 +1,8 @@
-package com.example.Service;
+package com.example.demo.Service;
 
 import java.util.List;
 
-import com.example.Entity.Categoria;
+import com.example.demo.Entity.Categoria;
 public interface CategoriaService {
 
   List<Categoria> listar();
