@@ -23,8 +23,12 @@ public class HolaController {
   }
 
   @GetMapping("/fragments/usuarios")
-  public String getUsuariosFragment() { return "usuarios :: contenido"; }
+  public String getUsuariosFragment() {
+     return "usuarios :: contenido";
+    }
 
   @GetMapping("/fragments/categorias")
-  public String getCategoriasFragment() { return "categorias :: contenido"; }
+  public String getCategoriasFragment() {
+    return "categorias :: contenido";
+  }
 }
