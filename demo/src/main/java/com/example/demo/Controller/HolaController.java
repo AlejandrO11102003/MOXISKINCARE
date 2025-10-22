@@ -5,12 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HolaController {
-
-  @GetMapping("/login")
-  public String cargarPaginaLogin() {
-    return "login";
-  }
-
+  
   @GetMapping("/usuarios")
   public String adminRoutes() {
     return "layout";

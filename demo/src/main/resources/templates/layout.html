@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -89,14 +93,24 @@
   </head>
   <body>
     <div class="sidebar">
-      <h2>Modulos</h2>
+      <h2>Administración</h2>
       <ul>
-        <li><a href="/categorias">Categorías</a></li>
-        <li><a href="/productos">Productos</a></li>
-        <li><a href="/usuarios">Usuarios</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="/categorias">Categorías</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="/usuarios">Usuarios</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="/productos">Productos</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="/logout">Cerrar Sesión</a>
+        </li>
       </ul>
     </div>
-    <main id="main-content" class="content"></main>
+    <div class="content">
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -108,9 +122,10 @@
         '/usuarios': '/fragments/usuarios',
         '/categorias': '/fragments/categorias',
         '/productos': '/fragments/productos',
+        '/login': '/login',
       };
       const loadContent = async (path) => {
-        const contentDiv = document.getElementById('main-content');
+        const contentDiv = document.querySelector('.content');
         const route = routes[path];
         document.querySelectorAll('.sidebar a').forEach((link) => {
           if (link.getAttribute('href') === path) {
