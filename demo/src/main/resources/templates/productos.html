@@ -1,0 +1,231 @@
+<div th:fragment="contenido">
+  <h1 class="mb-4">Gestión de Productos</h1>
+  <form id="productoForm">
+    <input type="hidden" id="productoId" />
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre:</label>
+      <input type="text" id="nombre" class="form-control" required />
+    </div>
+    <div class="mb-3">
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" class="form-control" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="precio" class="form-label">Precio:</label>
+      <input
+        type="number"
+        id="precio"
+        class="form-control"
+        step="0.01"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="stock" class="form-label">Stock:</label>
+      <input type="number" id="stock" class="form-control" required />
+    </div>
+    <div class="mb-3">
+      <label for="imagen" class="form-label">URL de Imagen:</label>
+      <input type="text" id="imagen" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="categoria" class="form-label">Categoría:</label>
+      <select id="categoria" class="form-control" required></select>
+    </div>
+    <button type="submit" id="submitBtn" class="btn btn-primary">
+      Crear Producto
+    </button>
+    <button
+      type="button"
+      id="cancelBtn"
+      class="btn btn-secondary"
+      style="display: none"
+    >
+      Cancelar Edición
+    </button>
+  </form>
+
+  <h2 class="mt-5">Lista de Productos</h2>
+  <table id="productosTable" class="table table-striped table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- productos carga -->
+    </tbody>
+  </table>
+
+  <script>
+    (() => {
+      const API_URL = '/producto';
+      const CATEGORIA_API_URL = '/categoria';
+
+      fetchProductos();
+      fetchCategorias();
+
+      const productoForm = document.getElementById('productoForm');
+      if (productoForm) {
+        productoForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const productoId = document.getElementById('productoId').value;
+          const productoData = {
+            nombre: document.getElementById('nombre').value,
+            descripcion: document.getElementById('descripcion').value,
+            precio: parseFloat(document.getElementById('precio').value),
+            stock: parseInt(document.getElementById('stock').value),
+            imagen: document.getElementById('imagen').value,
+            categoria: {
+              idCategoria: document.getElementById('categoria').value,
+            },
+          };
+
+          if (productoId) {
+            await updateProducto(productoId, productoData);
+          } else {
+            await createProducto(productoData);
+          }
+          resetForm();
+          fetchProductos();
+        });
+      }
+
+      const cancelBtn = document.getElementById('cancelBtn');
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          resetForm();
+        });
+      }
+
+      async function fetchCategorias() {
+        try {
+          const response = await fetch(CATEGORIA_API_URL);
+          const categorias = await response.json();
+          const categoriaSelect = document.getElementById('categoria');
+          if (!categoriaSelect) return;
+          categoriaSelect.innerHTML =
+            '<option value="">Seleccione una categoría</option>';
+          categorias.forEach((cat) => {
+            const option = document.createElement('option');
+            option.value = cat.idCategoria;
+            option.textContent = cat.nombre;
+            categoriaSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error('Error fetching categorias:', error);
+        }
+      }
+
+      async function fetchProductos() {
+        try {
+          const response = await fetch(API_URL);
+          const productos = await response.json();
+          const productosTableBody = document.querySelector(
+            '#productosTable tbody'
+          );
+          if (!productosTableBody) return;
+          productosTableBody.innerHTML = '';
+          productos.forEach((producto) => {
+            const row = productosTableBody.insertRow();
+            row.innerHTML = `
+                        <td>${producto.idProducto}</td>
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.precio}</td>
+                        <td>${producto.stock}</td>
+                        <td>${
+                          producto.categoria ? producto.categoria.nombre : 'N/A'
+                        }</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm edit-btn">Editar</button>
+                            <button class="btn btn-danger btn-sm delete-btn">Eliminar</button>
+                        </td>
+                    `;
+            row
+              .querySelector('.edit-btn')
+              .addEventListener('click', () =>
+                editProducto(producto.idProducto)
+              );
+            row
+              .querySelector('.delete-btn')
+              .addEventListener('click', () =>
+                deleteProducto(producto.idProducto)
+              );
+          });
+        } catch (error) {
+          console.error('Error fetching productos:', error);
+        }
+      }
+
+      async function createProducto(producto) {
+        try {
+          await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(producto),
+          });
+        } catch (error) {
+          console.error('Error creating producto:', error);
+        }
+      }
+
+      async function updateProducto(id, producto) {
+        try {
+          await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(producto),
+          });
+        } catch (error) {
+          console.error('Error updating producto:', error);
+        }
+      }
+
+      window.editProducto = async (id) => {
+        try {
+          const response = await fetch(`${API_URL}/${id}`);
+          const producto = await response.json();
+          document.getElementById('productoId').value = producto.idProducto;
+          document.getElementById('nombre').value = producto.nombre;
+          document.getElementById('descripcion').value = producto.descripcion;
+          document.getElementById('precio').value = producto.precio;
+          document.getElementById('stock').value = producto.stock;
+          document.getElementById('imagen').value = producto.imagen;
+          document.getElementById('categoria').value =
+            producto.categoria.idCategoria;
+
+          document.getElementById('submitBtn').textContent =
+            'Actualizar Producto';
+          document.getElementById('cancelBtn').style.display = 'inline-block';
+        } catch (error) {
+          console.error('Error fetching producto for edit:', error);
+        }
+      };
+
+      window.deleteProducto = async (id) => {
+        if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+          try {
+            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            fetchProductos();
+          } catch (error) {
+            console.error('Error deleting producto:', error);
+          }
+        }
+      };
+
+      function resetForm() {
+        document.getElementById('productoForm').reset();
+        document.getElementById('productoId').value = '';
+        document.getElementById('submitBtn').textContent = 'Crear Producto';
+        document.getElementById('cancelBtn').style.display = 'none';
+      }
+    })();
+  </script>
+</div>
