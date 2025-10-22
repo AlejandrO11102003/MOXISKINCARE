@@ -89,9 +89,10 @@
   </head>
   <body>
     <div class="sidebar">
-      <h2>Administración</h2>
+      <h2>Modulos</h2>
       <ul>
         <li><a href="/categorias">Categorías</a></li>
+        <li><a href="/productos">Productos</a></li>
         <li><a href="/usuarios">Usuarios</a></li>
       </ul>
     </div>
@@ -106,6 +107,7 @@
       const routes = {
         '/usuarios': '/fragments/usuarios',
         '/categorias': '/fragments/categorias',
+        '/productos': '/fragments/productos',
       };
       const loadContent = async (path) => {
         const contentDiv = document.getElementById('main-content');
