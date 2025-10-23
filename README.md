@@ -93,7 +93,7 @@ La evidencia de los releases se puede encontrar en la sección de [Releases de G
 
 ## Capturas de Pantalla
 
-![Conflicto Merge](./src/main/resources/static/img/Imagen%20de%20WhatsApp%202025-10-20%20a%20las%2021.23.50_b9b9a7aa.jpg)
+![Conflicto Merge](./demo/src/main/resources/static/img/Imagen%20de%20WhatsApp%202025-10-20%20a%20las%2021.23.50_b9b9a7aa.jpg)
 
 ## Enlaces del Proyecto
 
