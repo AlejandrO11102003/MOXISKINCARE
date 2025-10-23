@@ -9,44 +9,29 @@
   <body>
     <div class="login-container">
       <h2>Iniciar Sesión</h2>
-      <input type="email" id="correo" placeholder="Correo" />
-      <input type="password" id="password" placeholder="Contraseña" />
-      <button onclick="login()">Entrar</button>
-      <p class="msg" id="mensaje"></p>
+      <form action="/login" method="post">
+        <input
+          type="email"
+          id="username"
+          name="username"
+          placeholder="Correo"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Contraseña"
+          required
+        />
+        <button type="submit">Entrar</button>
+      </form>
+      <div th:if="${param.error}" class="alert alert-danger">
+        Credenciales inválidas.
+      </div>
+      <div th:if="${param.logout}" class="alert alert-success">
+        Has cerrado sesión.
+      </div>
     </div>
-
-    <script>
-      async function login() {
-        const correo = document.getElementById("correo").value;
-        const pass = document.getElementById("password").value;
-        const mensaje = document.getElementById("mensaje");
-        mensaje.textContent = "";
-
-        try {
-          const response = await fetch("/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `correo=${encodeURIComponent(
-              correo
-            )}&password=${encodeURIComponent(pass)}`,
-          });
-
-          const result = await response.text();
-          if (result === "Login exitoso") {
-            mensaje.style.color = "blue";
-            mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
-            window.location.href = "/usuarios";
-          } else {
-            mensaje.style.color = "red";
-            mensaje.textContent = result;
-          }
-        } catch (error) {
-          mensaje.style.color = "red";
-          mensaje.textContent = "Error al conectar con el servidor.";
-        }
-      }
-    </script>
   </body>
 </html>

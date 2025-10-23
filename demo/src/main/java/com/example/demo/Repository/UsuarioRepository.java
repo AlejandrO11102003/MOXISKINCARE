@@ -1,10 +1,12 @@
 package com.example.demo.Repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.Entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository <Usuario, Long> {
 
-    Usuario findByCorreoAndPassword(String correo, String password);
+    Optional<Usuario> findByCorreo(String correo);
 }
