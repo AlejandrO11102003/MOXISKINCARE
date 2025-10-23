@@ -1,37 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="/css/login.css" />
   </head>
-
   <body>
-    <div class="login-container">
-      <h2>Iniciar Sesión</h2>
-      <form action="/login" method="post">
-        <input
-          type="email"
-          id="username"
-          name="username"
-          placeholder="Correo"
-          required
-        />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Contraseña"
-          required
-        />
-        <button type="submit">Entrar</button>
-      </form>
-      <div th:if="${param.error}" class="alert alert-danger">
-        Credenciales inválidas.
+    <div class="login-wrapper">
+      <div class="login-image">
+        <div class="image-placeholder">
+          <img
+            src="https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1935"
+            alt="Imagen de Inicio de Sesión"
+          />
+        </div>
       </div>
-      <div th:if="${param.logout}" class="alert alert-success">
-        Has cerrado sesión.
+
+      <div class="login-container">
+        <div class="login-header">
+          <h2>Iniciar Sesión</h2>
+          <p>Ingresa tus credenciales para acceder</p>
+        </div>
+
+        <form action="/login" method="post">
+          <div class="input-group">
+            <input
+              type="email"
+              id="username"
+              name="username"
+              placeholder="Correo electrónico"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+
+          <button type="submit">Entrar</button>
+        </form>
+
+        <div class="forgot-password">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Mensajes de alerta (simulados para mostrar el diseño) -->
+        <div class="alert alert-danger" style="display: none">
+          Credenciales inválidas.
+        </div>
+        <div class="alert alert-success" style="display: none">
+          Has cerrado sesión.
+        </div>
       </div>
     </div>
+
+    <script>
+      // Simulación de mensajes de error/éxito para mostrar el diseño
+      // En una implementación real, estos se mostrarían condicionalmente según el backend
+      document.addEventListener("DOMContentLoaded", function () {
+        // Simular parámetro de error (para propósitos de demostración)
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get("error");
+        const logoutParam = urlParams.get("logout");
+
+        if (errorParam) {
+          document.querySelector(".alert-danger").style.display = "block";
+        }
+
+        if (logoutParam) {
+          document.querySelector(".alert-success").style.display = "block";
+        }
+      });
+    </script>
   </body>
 </html>
