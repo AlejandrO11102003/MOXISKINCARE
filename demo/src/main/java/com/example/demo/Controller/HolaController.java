@@ -10,7 +10,7 @@ public class HolaController {
   public String adminRoutes() {
     return "layout";
   }
-  
+
   @GetMapping("/categorias")
   public String adminRoutesCategorias() {
     return "layout";
@@ -18,6 +18,11 @@ public class HolaController {
 
   @GetMapping("/productos")
   public String adminRoutesProductos() {
+    return "layout";
+  }
+
+  @GetMapping("/clientes")
+  public String adminRoutesClientes() {
     return "layout";
   }
 
@@ -34,5 +39,10 @@ public class HolaController {
   @GetMapping("/fragments/productos")
   public String getProductosFragment() {
     return "productos :: contenido";
+  }
+
+  @GetMapping("/fragments/clientes")
+  public String getClientesFragment() {
+    return "clientes :: contenido";
   }
 }

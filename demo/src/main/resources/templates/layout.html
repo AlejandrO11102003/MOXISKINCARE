@@ -35,7 +35,7 @@
       body {
         display: flex;
         min-height: 100vh;
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
         margin: 0;
         background-color: var(--bs-body-bg);
       }
@@ -126,11 +126,11 @@
       const loadContent = async (path) => {
         const contentDiv = document.querySelector('.content');
         const route = routes[path];
-        document.querySelectorAll('.sidebar a').forEach((link) => {
-          if (link.getAttribute('href') === path) {
-            link.classList.add('active');
+        document.querySelectorAll(".sidebar a").forEach((link) => {
+          if (link.getAttribute("href") === path) {
+            link.classList.add("active");
           } else {
-            link.classList.remove('active');
+            link.classList.remove("active");
           }
         });
 
@@ -145,9 +145,9 @@
             const html = await response.text();
             contentDiv.innerHTML = `<div class="container-fluid p-4">${html}</div>`;
 
-            Array.from(contentDiv.querySelectorAll('script')).forEach(
+            Array.from(contentDiv.querySelectorAll("script")).forEach(
               (oldScript) => {
-                const newScript = document.createElement('script');
+                const newScript = document.createElement("script");
                 Array.from(oldScript.attributes).forEach((attr) =>
                   newScript.setAttribute(attr.name, attr.value)
                 );
@@ -158,13 +158,13 @@
               }
             );
           } catch (error) {
-            console.error('No se pudo cargar el contenido:', error);
+            console.error("No se pudo cargar el contenido:", error);
             contentDiv.innerHTML =
               '<div class="container-fluid p-4"><h1>Error al cargar la página.</h1></div>';
           }
         } else {
-          if (path === '/' || path.startsWith('/login')) {
-            window.location.href = '/categorias';
+          if (path === "/" || path.startsWith("/login")) {
+            window.location.href = "/categorias";
             return;
           }
           contentDiv.innerHTML =
@@ -172,16 +172,16 @@
         }
       };
 
-      document.querySelector('.sidebar').addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
+      document.querySelector(".sidebar").addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
           e.preventDefault();
-          const path = e.target.getAttribute('href');
-          history.pushState(null, '', path);
+          const path = e.target.getAttribute("href");
+          history.pushState(null, "", path);
           loadContent(path);
         }
       });
 
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         loadContent(window.location.pathname);
       });
     </script>
