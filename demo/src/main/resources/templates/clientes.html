@@ -21,7 +21,7 @@
     (() => {
       async function fetchClientes() {
         try {
-          const response = await fetch("/api/clientes");
+          const response = await fetch("/cliente");
           const clientes = await response.json();
           const tbody = document
             .getElementById("clientesTable")
