@@ -33,12 +33,37 @@
       }
 
       body {
-        display: flex;
-        min-height: 100vh;
-        font-family: "Poppins", sans-serif;
+        /* Se eliminan display: flex y min-height: 100vh de aquí */
+        font-family: 'Poppins', sans-serif;
         margin: 0;
         background-color: var(--bs-body-bg);
       }
+      /* Nuevo wrapper para el sidebar y el contenido principal */
+      .main-wrapper {
+        display: flex;
+        min-height: calc(
+          100vh - 56px
+        ); /* Ajusta 56px si la altura de tu navbar es diferente */
+        flex-grow: 1; /* Permite que ocupe el espacio restante */
+      }
+      /* Estilos personalizados para el navbar superior */
+      .navbar-dark .navbar-brand {
+        color: var(--brand-white);
+        font-weight: 700;
+      }
+      .navbar-dark .navbar-text {
+        color: var(--brand-pink-light);
+      }
+      .navbar-dark .btn-outline-light {
+        color: var(--brand-pink-light);
+        border-color: var(--brand-pink-light);
+      }
+      .navbar-dark .btn-outline-light:hover {
+        background-color: var(--brand-pink);
+        color: var(--brand-dark);
+        border-color: var(--brand-pink);
+      }
+
       .sidebar {
         width: 250px;
         background-color: var(--brand-dark);
@@ -92,27 +117,47 @@
     </style>
   </head>
   <body>
-    <div class="sidebar">
-      <h2>Modulos</h2>
-      <ul>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/categorias">Categorías</a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/usuarios">Usuarios</a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/productos">Productos</a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/clientes">Clientes</a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/logout">Cerrar Sesión</a>
-        </li>
-      </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1"></span>
+        <div class="d-flex align-items-center">
+          <span class="navbar-text me-3" sec:authorize="isAuthenticated()">
+            Bienvenido, <span sec:authentication="name"></span> (<span
+              sec:authentication="principal.username"
+            ></span
+            >)
+          </span>
+          <a
+            th:href="@{/logout}"
+            class="btn btn-outline-light btn-sm"
+            sec:authorize="isAuthenticated()"
+            >Cerrar Sesión</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Wrapper para el Sidebar y el Contenido Principal -->
+    <div class="main-wrapper">
+      <div class="sidebar">
+        <h2>Modulos</h2>
+        <ul>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/categorias">Categorías</a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/usuarios">Usuarios</a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/productos">Productos</a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/clientes">Clientes</a>
+          </li>
+        </ul>
+      </div>
+      <div class="content"></div>
     </div>
-    <div class="content"></div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -121,20 +166,20 @@
 
     <script>
       const routes = {
-        "/usuarios": "/fragments/usuarios",
-        "/categorias": "/fragments/categorias",
-        "/productos": "/fragments/productos",
-        "/clientes": "/fragments/clientes",
-        "/login": "/login",
+        '/usuarios': '/fragments/usuarios',
+        '/categorias': '/fragments/categorias',
+        '/productos': '/fragments/productos',
+        '/clientes': '/fragments/clientes',
+        '/login': '/login',
       };
       const loadContent = async (path) => {
-        const contentDiv = document.querySelector(".content");
+        const contentDiv = document.querySelector('.content');
         const route = routes[path];
-        document.querySelectorAll(".sidebar a").forEach((link) => {
-          if (link.getAttribute("href") === path) {
-            link.classList.add("active");
+        document.querySelectorAll('.sidebar a').forEach((link) => {
+          if (link.getAttribute('href') === path) {
+            link.classList.add('active');
           } else {
-            link.classList.remove("active");
+            link.classList.remove('active');
           }
         });
 
@@ -149,9 +194,9 @@
             const html = await response.text();
             contentDiv.innerHTML = `<div class="container-fluid p-4">${html}</div>`;
 
-            Array.from(contentDiv.querySelectorAll("script")).forEach(
+            Array.from(contentDiv.querySelectorAll('script')).forEach(
               (oldScript) => {
-                const newScript = document.createElement("script");
+                const newScript = document.createElement('script');
                 Array.from(oldScript.attributes).forEach((attr) =>
                   newScript.setAttribute(attr.name, attr.value)
                 );
@@ -162,13 +207,13 @@
               }
             );
           } catch (error) {
-            console.error("No se pudo cargar el contenido:", error);
+            console.error('No se pudo cargar el contenido:', error);
             contentDiv.innerHTML =
               '<div class="container-fluid p-4"><h1>Error al cargar la página.</h1></div>';
           }
         } else {
-          if (path === "/" || path.startsWith("/login")) {
-            window.location.href = "/categorias";
+          if (path === '/' || path.startsWith('/login')) {
+            window.location.href = '/categorias';
             return;
           }
           contentDiv.innerHTML =
@@ -176,16 +221,16 @@
         }
       };
 
-      document.querySelector(".sidebar").addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
+      document.querySelector('.sidebar').addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
           e.preventDefault();
-          const path = e.target.getAttribute("href");
-          history.pushState(null, "", path);
+          const path = e.target.getAttribute('href');
+          history.pushState(null, '', path);
           loadContent(path);
         }
       });
 
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener('DOMContentLoaded', () => {
         loadContent(window.location.pathname);
       });
     </script>

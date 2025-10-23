@@ -20,7 +20,7 @@ import com.example.demo.Repository.UsuarioRepository;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-  //inyeccion para tests      
+  //inyeccion para tests
   @Autowired
   private UsuarioRepository usuarioRepository;
 

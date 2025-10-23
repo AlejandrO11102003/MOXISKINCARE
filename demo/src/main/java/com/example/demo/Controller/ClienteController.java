@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Entity.Cliente;
 import com.example.demo.Service.ClienteService;
+import com.example.demo.Enum.EstadoCliente;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +38,9 @@ public class ClienteController {
 
   @PostMapping
   public Cliente crearCliente(@RequestBody Cliente cliente) {
+    if (cliente.getEstado() == null) {
+      cliente.setEstado(EstadoCliente.ACTIVO);
+    }
     return clienteService.crearCliente(cliente);
   }
 

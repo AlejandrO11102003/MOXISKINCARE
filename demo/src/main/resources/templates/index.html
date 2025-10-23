@@ -1,106 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MoxiSkincare - Tu guía confiable de The Ordinary</title>
     <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="css/index.css" />
- 
-</head>
-   <nav class="navbar">
-        <div class="container navbar-content">
-            <a href="#" class="navbar-brand">
-                <i class="fas fa-spa"></i>
-                MoxiSkincare
-            </a>
-            <div class="navbar-links">
-                <a href="#productos" class="navbar-link">Productos</a>
-                <a href="#acerca" class="navbar-link">Acerca de</a>
-                <a href="#contacto" class="navbar-link">Contacto</a>
-            </div>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-content">
+        <a href="#" class="navbar-brand">
+          <i class="fas fa-spa"></i>
+          MoxiSkincare
+        </a>
+        <div class="navbar-links">
+          <a href="#productos" class="navbar-link">
+            <i class="fas fa-leaf"></i> Productos
+          </a>
+          <a href="#acerca" class="navbar-link">
+            <i class="fas fa-user"></i> Acerca de
+          </a>
+          <a href="#contacto" class="navbar-link">
+            <i class="fas fa-envelope"></i> Contacto
+          </a>
         </div>
+      </div>
     </nav>
 
     <main>
-        <section class="hero">
-            <div class="container hero-content">
-                <div class="hero-badge fade-in">
-                    Especialistas en The Ordinary
-                </div>
-                <h1 class="fade-in delay-1">Tu guía confiable de The Ordinary</h1>
-                <p class="fade-in delay-2">Descubre los mejores productos de The Ordinary para tu tipo de piel. Eficacia comprobada, ingredientes transparentes y precios accesibles.</p>
-            </div>
-        </section>
+      <section class="hero">
+        <div class="container hero-content">
+          <div class="hero-badge fade-in">Especialistas en The Ordinary</div>
+          <h1 class="fade-in delay-1">Tu guía confiable de The Ordinary</h1>
+          <p class="fade-in delay-2">
+            Descubre los mejores productos de The Ordinary para tu tipo de piel.
+            Eficacia comprobada, ingredientes transparentes y precios
+            accesibles.
+          </p>
+        </div>
+      </section>
 
-        <section id="productos" class="product-filters">
-            <div class="container">
-                <h2 class="section-title">Nuestros Productos</h2>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">Todos</button>
-                    <button class="filter-btn" data-filter="hidratantes">Hidratantes</button>
-                    <button class="filter-btn" data-filter="acidos">Ácidos</button>
-                    <button class="filter-btn" data-filter="serums">Sérums</button>
-                    <button class="filter-btn" data-filter="antioxidantes">Antioxidantes</button>
-                </div>
-            </div>
-        </section>
+      <section id="productos" class="product-filters">
+        <div class="container">
+          <h2 class="section-title">Nuestros Productos</h2>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="hidratantes">
+              Hidratantes
+            </button>
+            <button class="filter-btn" data-filter="acidos">Ácidos</button>
+            <button class="filter-btn" data-filter="serums">Sérums</button>
+            <button class="filter-btn" data-filter="antioxidantes">
+              Antioxidantes
+            </button>
+          </div>
+        </div>
+      </section>
 
-        <section class="products-section">
-            <div class="container">
-                <div class="products-grid" id="products-container">
-                    <!-- Los productos se cargarán aquí con JavaScript -->
-                </div>
-            </div>
-        </section>
+      <section class="products-section">
+        <div class="container">
+          <div class="products-grid" id="products-container">
+            <!-- Los productos se cargarán aquí con JavaScript -->
+          </div>
+        </div>
+      </section>
 
-        <section id="acerca" class="about-section">
-            <div class="container about-content">
-                <div class="about-avatar">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <h2 class="section-title">Acerca de Moxi</h2>
-                <p class="about-text">
-                    Hola, soy <span class="highlight">Moxi</span> ✨, una apasionada por el skincare y los ingredientes activos. 
-                    Me especializo en productos de <span class="highlight">The Ordinary</span> porque creo en fórmulas transparentes, 
-                    efectivas y accesibles. Mi misión es ayudarte a encontrar la rutina perfecta para tu tipo de piel, 
-                    con recomendaciones basadas en ingredientes y resultados comprobados.
-                </p>
-                <p class="about-text">
-                    En MoxiSkincare, no solo vendemos productos, te educamos sobre el cuidado de la piel para que tomes 
-                    decisiones informadas y consigas los mejores resultados.
-                </p>
-            </div>
-        </section>
+      <section id="acerca" class="about-section">
+        <div class="container about-content">
+          <div class="about-avatar">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h2 class="section-title">Acerca de Moxi</h2>
+          <p class="about-text">
+            Hola, soy <span class="highlight">Moxi</span> ✨, una apasionada por
+            el skincare y los ingredientes activos. Me especializo en productos
+            de <span class="highlight">The Ordinary</span> porque creo en
+            fórmulas transparentes, efectivas y accesibles. Mi misión es
+            ayudarte a encontrar la rutina perfecta para tu tipo de piel, con
+            recomendaciones basadas en ingredientes y resultados comprobados.
+          </p>
+          <p class="about-text">
+            En MoxiSkincare, no solo vendemos productos, te educamos sobre el
+            cuidado de la piel para que tomes decisiones informadas y consigas
+            los mejores resultados.
+          </p>
+        </div>
+      </section>
 
-        <section id="contacto" class="contact-section">
-            <div class="container contact-content">
-                <h2 class="section-title">Contacto</h2>
-                <div class="contact-info">
-                    <p class="contact-detail">¿Dudas, pedidos o consultas sobre productos? ¡Estoy para ayudarte!</p>
-                    <p class="contact-detail"><strong>Ubicación:</strong> Chiclayo, Perú (envíos a todo el país)</p>
-                    <p class="contact-detail"><strong>Email:</strong> moxi@theordinaryperu.com</p>
-                </div>
-                <div class="contact-links">
-                    <a href="https://www.instagram.com/moooxi.22/" target="_blank" class="contact-link instagram">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a href="https://wa.me/51962022490?text=Hola%2C%20quiero%20consultar%20sobre%20los%20productos%20de%20The%20Ordinary" target="_blank" class="contact-link whatsapp">
-                        <i class="fab fa-whatsapp"></i> Escríbeme por WhatsApp
-                    </a>
-                </div>
-            </div>
-        </section>
+      <section id="contacto" class="contact-section">
+        <div class="container contact-content">
+          <h2 class="section-title">Contacto</h2>
+          <div class="contact-info">
+            <p class="contact-detail">
+              ¿Dudas, pedidos o consultas sobre productos? ¡Estoy para ayudarte!
+            </p>
+            <p class="contact-detail">
+              <strong>Ubicación:</strong> Chiclayo, Perú (envíos a todo el país)
+            </p>
+            <p class="contact-detail">
+              <strong>Email:</strong> moxi@theordinaryperu.com
+            </p>
+          </div>
+          <div class="contact-links">
+            <a
+              href="https://www.instagram.com/moooxi.22/"
+              target="_blank"
+              class="contact-link instagram"
+            >
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+            <a
+              href="https://wa.me/51962022490?text=Hola%2C%20quiero%20consultar%20sobre%20los%20productos%20de%20The%20Ordinary"
+              target="_blank"
+              class="contact-link whatsapp"
+            >
+              <i class="fab fa-whatsapp"></i> Escríbeme por WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 MoxiSkincare. Todos los derechos reservados.</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2025 MoxiSkincare. Todos los derechos reservados.</p>
+      </div>
     </footer>
-<script src="/js/index.js"></script>
-</body>
+
+    <script src="/js/index.js"></script>
+  </body>
 </html>
