@@ -105,6 +105,9 @@
           <a href="/productos">Productos</a>
         </li>
         <li sec:authorize="isAuthenticated()">
+          <a href="/clientes">Clientes</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
           <a href="/logout">Cerrar Sesión</a>
         </li>
       </ul>
@@ -118,13 +121,14 @@
 
     <script>
       const routes = {
-        '/usuarios': '/fragments/usuarios',
-        '/categorias': '/fragments/categorias',
-        '/productos': '/fragments/productos',
-        '/login': '/login',
+        "/usuarios": "/fragments/usuarios",
+        "/categorias": "/fragments/categorias",
+        "/productos": "/fragments/productos",
+        "/clientes": "/fragments/clientes",
+        "/login": "/login",
       };
       const loadContent = async (path) => {
-        const contentDiv = document.querySelector('.content');
+        const contentDiv = document.querySelector(".content");
         const route = routes[path];
         document.querySelectorAll(".sidebar a").forEach((link) => {
           if (link.getAttribute("href") === path) {
