@@ -1,52 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="/css/login.css" />
   </head>
-
   <body>
-    <div class="login-container">
-      <h2>Iniciar Sesión</h2>
-      <input type="email" id="correo" placeholder="Correo" />
-      <input type="password" id="password" placeholder="Contraseña" />
-      <button onclick="login()">Entrar</button>
-      <p class="msg" id="mensaje"></p>
+    <div class="login-wrapper">
+      <div class="login-image">
+        <div class="image-placeholder">
+          <img
+            src="https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1935"
+            alt="Imagen de Inicio de Sesión"
+          />
+        </div>
+      </div>
+
+      <div class="login-container">
+        <div class="login-header">
+          <h2>Iniciar Sesión</h2>
+          <p>Ingresa tus credenciales para acceder</p>
+        </div>
+
+        <form action="/login" method="post">
+          <div class="input-group">
+            <input
+              type="email"
+              id="username"
+              name="username"
+              placeholder="Correo electrónico"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+
+          <button type="submit">Entrar</button>
+        </form>
+
+        <div class="forgot-password">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Mensajes de alerta (simulados para mostrar el diseño) -->
+        <div class="alert alert-danger" style="display: none">
+          Credenciales inválidas.
+        </div>
+        <div class="alert alert-success" style="display: none">
+          Has cerrado sesión.
+        </div>
+      </div>
     </div>
 
     <script>
-      async function login() {
-        const correo = document.getElementById("correo").value;
-        const pass = document.getElementById("password").value;
-        const mensaje = document.getElementById("mensaje");
-        mensaje.textContent = "";
+      // Simulación de mensajes de error/éxito para mostrar el diseño
+      // En una implementación real, estos se mostrarían condicionalmente según el backend
+      document.addEventListener("DOMContentLoaded", function () {
+        // Simular parámetro de error (para propósitos de demostración)
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get("error");
+        const logoutParam = urlParams.get("logout");
 
-        try {
-          const response = await fetch("/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `correo=${encodeURIComponent(
-              correo
-            )}&password=${encodeURIComponent(pass)}`,
-          });
-
-          const result = await response.text();
-          if (result === "Login exitoso") {
-            mensaje.style.color = "blue";
-            mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
-            window.location.href = "/usuarios";
-          } else {
-            mensaje.style.color = "red";
-            mensaje.textContent = result;
-          }
-        } catch (error) {
-          mensaje.style.color = "red";
-          mensaje.textContent = "Error al conectar con el servidor.";
+        if (errorParam) {
+          document.querySelector(".alert-danger").style.display = "block";
         }
-      }
+
+        if (logoutParam) {
+          document.querySelector(".alert-success").style.display = "block";
+        }
+      });
     </script>
   </body>
 </html>

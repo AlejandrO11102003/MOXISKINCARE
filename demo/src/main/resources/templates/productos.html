@@ -1,0 +1,272 @@
+<div th:fragment="contenido">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Gestión de Productos</h1>
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#productoModal"
+      id="newProductoBtn"
+    >
+      Nuevo Producto
+    </button>
+  </div>
+
+  <table id="productosTable" class="table table-striped table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- productos se cargarán dinámicamente -->
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="productoModal"
+    tabindex="-1"
+    aria-labelledby="productoModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productoModalLabel">Nuevo Producto</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="productoForm" class="row g-3">
+            <input type="hidden" id="productoId" />
+            <div class="col-md-6 mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input type="text" id="nombre" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="precio" class="form-label">Precio:</label>
+              <input
+                type="number"
+                id="precio"
+                class="form-control"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="stock" class="form-label">Stock:</label>
+              <input type="number" id="stock" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="categoria" class="form-label">Categoría:</label>
+              <select id="categoria" class="form-control" required></select>
+            </div>
+            <div class="col-12 mb-3">
+              <label for="descripcion" class="form-label">Descripción:</label>
+              <textarea
+                id="descripcion"
+                class="form-control"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <div class="col-12 mb-3">
+              <label for="imagen" class="form-label">URL de Imagen:</label>
+              <input type="text" id="imagen" class="form-control" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button
+            type="submit"
+            form="productoForm"
+            id="submitBtn"
+            class="btn btn-primary"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const API_URL = '/producto';
+      const CATEGORIA_API_URL = '/categoria';
+      const productoModal = new bootstrap.Modal(
+        document.getElementById('productoModal')
+      );
+      const productoForm = document.getElementById('productoForm');
+      const modalLabel = document.getElementById('productoModalLabel');
+      const submitBtn = document.getElementById('submitBtn');
+      const productoIdField = document.getElementById('productoId');
+      const nombreInput = document.getElementById('nombre');
+      const descripcionInput = document.getElementById('descripcion');
+      const precioInput = document.getElementById('precio');
+      const stockInput = document.getElementById('stock');
+      const imagenInput = document.getElementById('imagen');
+      const categoriaSelect = document.getElementById('categoria');
+      const productosTableBody = document.querySelector(
+        '#productosTable tbody'
+      );
+
+      function fetchCategorias() {
+        fetch(CATEGORIA_API_URL)
+          .then((response) => response.json())
+          .then((categorias) => {
+            if (!categoriaSelect) return;
+            categoriaSelect.innerHTML =
+              '<option value="">Seleccione una categoría</option>';
+            categorias.forEach((cat) => {
+              const option = document.createElement('option');
+              option.value = cat.idCategoria;
+              option.textContent = cat.nombre;
+              categoriaSelect.appendChild(option);
+            });
+          })
+          .catch((error) => console.error('Error fetching categorias:', error));
+      }
+
+      function fetchProductos() {
+        fetch(API_URL)
+          .then((response) => response.json())
+          .then((productos) => {
+            if (!productosTableBody) return;
+            productosTableBody.innerHTML = '';
+            productos.forEach((producto) => {
+              const row = productosTableBody.insertRow();
+              row.innerHTML = `
+                <td>${producto.idProducto}</td>
+                <td>${producto.nombre}</td>
+                <td>${producto.descripcion}</td>
+                <td>${producto.precio}</td>
+                <td>${producto.stock}</td>
+                <td>${
+                  producto.categoria ? producto.categoria.nombre : 'N/A'
+                }</td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2 edit-btn" data-id="${
+                      producto.idProducto
+                    }">Editar</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-id="${
+                      producto.idProducto
+                    }">Eliminar</button>
+                </td>
+              `;
+            });
+          })
+          .catch((error) => console.error('Error fetching productos:', error));
+      }
+
+      function resetForm() {
+        productoForm.reset();
+        productoIdField.value = '';
+        modalLabel.textContent = 'Nuevo Producto';
+        submitBtn.textContent = 'Guardar';
+        // Asegurarse de que la categoría se restablezca a la opción por defecto
+        categoriaSelect.value = '';
+      }
+
+      document
+        .getElementById('newProductoBtn')
+        .addEventListener('click', () => {
+          resetForm();
+          productoModal.show();
+        });
+
+      productoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const productoId = productoIdField.value;
+        const productoData = {
+          nombre: nombreInput.value,
+          descripcion: descripcionInput.value,
+          precio: parseFloat(precioInput.value),
+          stock: parseInt(stockInput.value),
+          imagen: imagenInput.value,
+          categoria: {
+            idCategoria: categoriaSelect.value,
+          },
+        };
+
+        const method = productoId ? 'PUT' : 'POST';
+        const url = productoId ? `${API_URL}/${productoId}` : API_URL;
+
+        fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(productoData),
+        })
+          .then(() => {
+            fetchProductos();
+            productoModal.hide();
+          })
+          .catch((error) => console.error('Error saving producto:', error));
+      });
+
+      document
+        .querySelector('#productosTable')
+        .addEventListener('click', (e) => {
+          if (e.target.classList.contains('edit-btn')) {
+            const productoId = e.target.dataset.id;
+            fetch(`${API_URL}/${productoId}`)
+              .then((response) => response.json())
+              .then((producto) => {
+                productoIdField.value = producto.idProducto;
+                nombreInput.value = producto.nombre;
+                descripcionInput.value = producto.descripcion;
+                precioInput.value = producto.precio;
+                stockInput.value = producto.stock;
+                imagenInput.value = producto.imagen;
+                categoriaSelect.value = producto.categoria
+                  ? producto.categoria.idCategoria
+                  : '';
+
+                modalLabel.textContent = 'Editar Producto';
+                submitBtn.textContent = 'Actualizar';
+                productoModal.show();
+              })
+              .catch((error) =>
+                console.error('Error fetching producto for edit:', error)
+              );
+          } else if (e.target.classList.contains('delete-btn')) {
+            const productoId = e.target.dataset.id;
+            if (
+              confirm('¿Estás seguro de que quieres eliminar este producto?')
+            ) {
+              fetch(`${API_URL}/${productoId}`, { method: 'DELETE' })
+                .then(() => {
+                  fetchProductos();
+                })
+                .catch((error) =>
+                  console.error('Error deleting producto:', error)
+                );
+            }
+          }
+        });
+
+      // Cargar datos iniciales
+      fetchCategorias();
+      fetchProductos();
+    })();
+  </script>
+</div>

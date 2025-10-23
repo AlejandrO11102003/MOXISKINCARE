@@ -17,9 +17,8 @@ import com.example.demo.Service.Implementacion.ICategoriaService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/categoria")
 @RequiredArgsConstructor
-
 public class CategoriaController {
   
   private final ICategoriaService iCategoriaService;
@@ -30,7 +29,7 @@ public class CategoriaController {
   }
 
   @GetMapping("/{id}")
-  public Categoria getCategoriaById(@PathVariable Long idCategoria) {
+  public Categoria getCategoriaById(@PathVariable("id") Long idCategoria) {
     return iCategoriaService.buscarPorId(idCategoria);
   }
 
@@ -40,14 +39,13 @@ public class CategoriaController {
   }
 
   @PutMapping("/{id}")
-  public Categoria updateCategoria(@PathVariable Long idCategoria, @RequestBody Categoria categoria) {
+  public Categoria updateCategoria(@PathVariable("id") Long idCategoria, @RequestBody Categoria categoria) {
     categoria.setIdCategoria(idCategoria);
     return iCategoriaService.guardar(categoria);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteCategoria(@PathVariable Long idCategoria) {
+  public void deleteCategoria(@PathVariable("id") Long idCategoria) {
     iCategoriaService.eliminar(idCategoria);
   }
-
 }

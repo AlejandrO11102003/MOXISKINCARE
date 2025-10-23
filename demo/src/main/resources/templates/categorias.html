@@ -1,23 +1,17 @@
 <div th:fragment="contenido">
-  <h1 class="mb-4">Gestión de Categorías</h1>
-  <form id="categoriaForm">
-    <input type="hidden" id="idCategoria" />
-    <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre:</label>
-      <input type="text" id="nombre" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Gestión de Categorías</h1>
     <button
       type="button"
-      id="cancelarEdicion"
-      class="btn btn-secondary"
-      style="display: none"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#categoriaModal"
+      id="newCategoriaBtn"
     >
-      Cancelar Edición
+      Nueva Categoría
     </button>
-  </form>
+  </div>
 
-  <h2 class="mt-5">Listado de Categorías</h2>
   <table id="categoriasTable" class="table table-striped table-bordered mt-3">
     <thead>
       <tr>
@@ -26,105 +20,167 @@
         <th>Acciones</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Las categorías se cargarán aquí -->
-    </tbody>
+    <tbody></tbody>
   </table>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="categoriaModal"
+    tabindex="-1"
+    aria-labelledby="categoriaModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="categoriaModalLabel">Nueva Categoría</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="categoriaForm">
+            <input type="hidden" id="idCategoria" />
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input type="text" id="nombre" class="form-control" required />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button
+            type="submit"
+            form="categoriaForm"
+            id="submitBtn"
+            class="btn btn-primary"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     (() => {
+      const API_URL = '/categoria';
+      const categoriaModal = new bootstrap.Modal(
+        document.getElementById('categoriaModal')
+      );
       const categoriaForm = document.getElementById('categoriaForm');
+      const modalLabel = document.getElementById('categoriaModalLabel');
+      const submitBtn = document.getElementById('submitBtn');
       const idCategoriaInput = document.getElementById('idCategoria');
       const nombreInput = document.getElementById('nombre');
       const categoriasTableBody = document.querySelector(
         '#categoriasTable tbody'
       );
-      const cancelarEdicionBtn = document.getElementById('cancelarEdicion');
 
-      const API_URL = '/api/categorias';
-
-      // Cargar categorías
-      async function cargarCategorias() {
-        try {
-          const response = await fetch(API_URL);
-          const categorias = await response.json();
-          if (!categoriasTableBody) return;
-          categoriasTableBody.innerHTML = '';
-          categorias.forEach((categoria) => {
-            const row = categoriasTableBody.insertRow();
-            row.insertCell(0).textContent = categoria.idCategoria;
-            row.insertCell(1).textContent = categoria.nombre;
-            const accionesCell = row.insertCell(2);
-
-            const editarBtn = document.createElement('button');
-            editarBtn.textContent = 'Editar';
-            editarBtn.className = 'btn btn-warning btn-sm me-2';
-            editarBtn.addEventListener('click', () =>
-              editarCategoria(categoria)
-            );
-            accionesCell.appendChild(editarBtn);
-
-            const eliminarBtn = document.createElement('button');
-            eliminarBtn.textContent = 'Eliminar';
-            eliminarBtn.className = 'btn btn-danger btn-sm';
-            eliminarBtn.addEventListener('click', () =>
-              eliminarCategoria(categoria.idCategoria)
-            );
-            accionesCell.appendChild(eliminarBtn);
-          });
-        } catch (error) {
-          console.error('Error al cargar categorías:', error);
-        }
+      function fetchCategorias() {
+        fetch(API_URL)
+          .then((response) => response.json())
+          .then((categorias) => {
+            if (!categoriasTableBody) return;
+            categoriasTableBody.innerHTML = '';
+            categorias.forEach((categoria) => {
+              const row = categoriasTableBody.insertRow();
+              row.innerHTML = `
+                <td>${categoria.idCategoria}</td>
+                <td>${categoria.nombre}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2 edit-btn" data-id="${categoria.idCategoria}">Editar</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-id="${categoria.idCategoria}">Eliminar</button>
+                </td>
+              `;
+            });
+          })
+          .catch((error) =>
+            console.error('Error al cargar categorías:', error)
+          );
       }
 
-      // Guardar/Actualizar categoría
-      if (categoriaForm) {
-        categoriaForm.addEventListener('submit', async (event) => {
-          event.preventDefault();
-          const categoria = { nombre: nombreInput.value };
-          const id = idCategoriaInput.value;
-          const method = id ? 'PUT' : 'POST';
-          const url = id ? `${API_URL}/${id}` : API_URL;
+      function resetForm() {
+        categoriaForm.reset();
+        idCategoriaInput.value = '';
+        modalLabel.textContent = 'Nueva Categoría';
+        submitBtn.textContent = 'Guardar';
+      }
 
-          await fetch(url, {
-            method: method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(categoria),
-          });
-
-          categoriaForm.reset();
-          idCategoriaInput.value = '';
-          cancelarEdicionBtn.style.display = 'none';
-          cargarCategorias();
+      document
+        .getElementById('newCategoriaBtn')
+        .addEventListener('click', () => {
+          resetForm();
         });
-      }
 
-      // Editar categoría (carga los datos en el formulario)
-      function editarCategoria(categoria) {
-        idCategoriaInput.value = categoria.idCategoria;
-        nombreInput.value = categoria.nombre;
-        cancelarEdicionBtn.style.display = 'inline-block';
-      }
+      categoriaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = idCategoriaInput.value;
+        const categoriaData = {
+          nombre: nombreInput.value,
+        };
 
-      // Cancelar edición
-      if (cancelarEdicionBtn) {
-        cancelarEdicionBtn.addEventListener('click', () => {
-          categoriaForm.reset();
-          idCategoriaInput.value = '';
-          cancelarEdicionBtn.style.display = 'none';
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `${API_URL}/${id}` : API_URL;
+
+        fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(categoriaData),
+        })
+          .then(() => {
+            fetchCategorias();
+            categoriaModal.hide();
+          })
+          .catch((error) =>
+            console.error('Error al guardar categoría:', error)
+          );
+      });
+
+      document
+        .querySelector('#categoriasTable')
+        .addEventListener('click', (e) => {
+          if (e.target.classList.contains('edit-btn')) {
+            const categoriaId = e.target.dataset.id;
+            fetch(`${API_URL}/${categoriaId}`)
+              .then((response) => response.json())
+              .then((categoria) => {
+                idCategoriaInput.value = categoria.idCategoria;
+                nombreInput.value = categoria.nombre;
+                modalLabel.textContent = 'Editar Categoría';
+                submitBtn.textContent = 'Actualizar';
+                categoriaModal.show();
+              })
+              .catch((error) =>
+                console.error('Error al obtener categoría para editar:', error)
+              );
+          } else if (e.target.classList.contains('delete-btn')) {
+            const categoriaId = e.target.dataset.id;
+            if (
+              confirm('¿Estás seguro de que quieres eliminar esta categoría?')
+            ) {
+              fetch(`${API_URL}/${categoriaId}`, { method: 'DELETE' })
+                .then(() => {
+                  fetchCategorias();
+                })
+                .catch((error) =>
+                  console.error('Error al eliminar categoría:', error)
+                );
+            }
+          }
         });
-      }
 
-      // Eliminar categoría
-      async function eliminarCategoria(id) {
-        if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
-          await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-          cargarCategorias();
-        }
-      }
-
-      // Carga inicial
-      cargarCategorias();
+      fetchCategorias();
     })();
   </script>
 </div>

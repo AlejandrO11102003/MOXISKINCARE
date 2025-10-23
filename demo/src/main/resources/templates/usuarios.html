@@ -1,45 +1,17 @@
 <div th:fragment="contenido">
-  <h1 class="mb-4">Gestión de Usuarios</h1>
-  <form id="userForm">
-    <input type="hidden" id="userId" />
-    <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre:</label>
-      <input type="text" id="nombre" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label for="apellidos">Apellidos:</label>
-      <input type="text" id="apellidos" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label for="correo" class="form-label">Correo:</label>
-      <input type="email" id="correo" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Contraseña:</label>
-      <input type="password" id="password" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label for="telefono" class="form-label">Teléfono:</label>
-      <input type="text" id="telefono" class="form-control" />
-    </div>
-    <div class="mb-3">
-      <label for="direccion" class="form-label">Dirección:</label>
-      <input type="text" id="direccion" class="form-control" />
-    </div>
-    <button type="submit" id="submitBtn" class="btn btn-primary">
-      Crear Usuario
-    </button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Gestión de Usuarios</h1>
     <button
       type="button"
-      id="cancelBtn"
-      class="btn btn-secondary"
-      style="display: none"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#userModal"
+      id="newUserBtn"
     >
-      Cancelar Edición
+      Nuevo Usuario
     </button>
-  </form>
+  </div>
 
-  <h2 class="mt-5">Lista de Usuarios</h2>
   <table id="usersTable" class="table table-striped table-bordered mt-3">
     <thead>
       <tr>
@@ -53,140 +25,200 @@
       </tr>
     </thead>
     <tbody>
-      <!-- usuarioscarga -->
+      <!-- usuarios se cargarán dinámicamente -->
     </tbody>
   </table>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="userModal"
+    tabindex="-1"
+    aria-labelledby="userModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">Nuevo Usuario</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="userForm" class="row g-3">
+            <input type="hidden" id="userId" />
+            <div class="col-md-6 mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input type="text" id="nombre" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="apellidos" class="form-label">Apellidos:</label>
+              <input type="text" id="apellidos" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="correo" class="form-label">Correo:</label>
+              <input type="email" id="correo" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="password" class="form-label">Contraseña:</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="telefono" class="form-label">Teléfono:</label>
+              <input type="text" id="telefono" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="direccion" class="form-label">Dirección:</label>
+              <input type="text" id="direccion" class="form-control" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button
+            type="submit"
+            form="userForm"
+            id="submitBtn"
+            class="btn btn-primary"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     (() => {
       const API_URL = '/usuario';
-
-      fetchUsers();
+      const userModal = new bootstrap.Modal(
+        document.getElementById('userModal')
+      );
       const userForm = document.getElementById('userForm');
-      if (userForm) {
-        userForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const userId = document.getElementById('userId').value;
-          const userData = {
-            nombre: document.getElementById('nombre').value,
-            apellidos: document.getElementById('apellidos').value,
-            correo: document.getElementById('correo').value,
-            password: document.getElementById('password').value,
-            telefono: document.getElementById('telefono').value,
-            direccion: document.getElementById('direccion').value,
-          };
+      const modalLabel = document.getElementById('userModalLabel');
+      const submitBtn = document.getElementById('submitBtn');
+      const userIdField = document.getElementById('userId');
 
-          if (userId) {
-            await updateUser(userId, userData);
-          } else {
-            await createUser(userData);
-          }
-          resetForm();
-          fetchUsers();
-        });
+      function fetchUsers() {
+        fetch(API_URL)
+          .then((response) => response.json())
+          .then((users) => {
+            const usersTableBody = document.querySelector('#usersTable tbody');
+            if (!usersTableBody) return;
+            usersTableBody.innerHTML = '';
+            users.forEach((user) => {
+              const row = usersTableBody.insertRow();
+              row.innerHTML = `
+                <td>${user.idUsuario}</td>
+                <td>${user.nombre}</td>
+                <td>${user.apellidos}</td>
+                <td>${user.correo}</td>
+                <td>${user.telefono || ''}</td>
+                <td>${user.direccion || ''}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm edit-btn" data-id="${
+                      user.idUsuario
+                    }">Editar</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-id="${
+                      user.idUsuario
+                    }">Eliminar</button>
+                </td>
+              `;
+            });
+          })
+          .catch((error) => console.error('Error fetching users:', error));
       }
-
-      const cancelBtn = document.getElementById('cancelBtn');
-      if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => {
-          resetForm();
-        });
-      }
-
-      async function fetchUsers() {
-        try {
-          const response = await fetch(API_URL);
-          const users = await response.json();
-          const usersTableBody = document.querySelector('#usersTable tbody');
-          if (!usersTableBody) return;
-          usersTableBody.innerHTML = '';
-          users.forEach((user) => {
-            const row = usersTableBody.insertRow();
-            row.innerHTML = `
-                        <td>${user.idUsuario}</td>
-                        <td>${user.nombre}</td>
-                        <td>${user.apellidos}</td>
-                        <td>${user.correo}</td>
-                        <td>${user.telefono || ''}</td>
-                        <td>${user.direccion || ''}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm edit-btn">Editar</button>
-                            <button class="btn btn-danger btn-sm delete-btn">Eliminar</button>
-                        </td>
-                    `;
-            row
-              .querySelector('.edit-btn')
-              .addEventListener('click', () => editUser(user.idUsuario));
-            row
-              .querySelector('.delete-btn')
-              .addEventListener('click', () => deleteUser(user.idUsuario));
-          });
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      }
-
-      async function createUser(user) {
-        try {
-          await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user),
-          });
-        } catch (error) {
-          console.error('Error creating user:', error);
-        }
-      }
-
-      async function updateUser(id, user) {
-        try {
-          await fetch(`${API_URL}/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user),
-          });
-        } catch (error) {
-          console.error('Error updating user:', error);
-        }
-      }
-
-      window.editUser = async (id) => {
-        try {
-          const response = await fetch(`${API_URL}/${id}`);
-          const user = await response.json();
-          document.getElementById('userId').value = user.idUsuario;
-          document.getElementById('nombre').value = user.nombre;
-          document.getElementById('apellidos').value = user.apellidos;
-          document.getElementById('correo').value = user.correo;
-          document.getElementById('password').value = ''; // No se debe precargar la contraseña
-          document.getElementById('telefono').value = user.telefono;
-          document.getElementById('direccion').value = user.direccion;
-
-          document.getElementById('submitBtn').textContent =
-            'Actualizar Usuario';
-          document.getElementById('cancelBtn').style.display = 'inline-block';
-        } catch (error) {
-          console.error('Error fetching user for edit:', error);
-        }
-      };
-
-      window.deleteUser = async (id) => {
-        if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-          try {
-            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-            fetchUsers();
-          } catch (error) {
-            console.error('Error deleting user:', error);
-          }
-        }
-      };
 
       function resetForm() {
-        document.getElementById('userForm').reset();
-        document.getElementById('userId').value = '';
-        document.getElementById('submitBtn').textContent = 'Crear Usuario';
-        document.getElementById('cancelBtn').style.display = 'none';
+        userForm.reset();
+        userIdField.value = '';
+        modalLabel.textContent = 'Nuevo Usuario';
+        submitBtn.textContent = 'Guardar';
+        document.getElementById('password').required = true;
       }
+
+      document.getElementById('newUserBtn').addEventListener('click', () => {
+        resetForm();
+      });
+
+      userForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userId = userIdField.value;
+        const userData = {
+          nombre: document.getElementById('nombre').value,
+          apellidos: document.getElementById('apellidos').value,
+          correo: document.getElementById('correo').value,
+          telefono: document.getElementById('telefono').value,
+          direccion: document.getElementById('direccion').value,
+        };
+        const password = document.getElementById('password').value;
+        if (password) {
+          userData.password = password;
+        }
+
+        const method = userId ? 'PUT' : 'POST';
+        const url = userId ? `${API_URL}/${userId}` : API_URL;
+
+        fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData),
+        })
+          .then(() => {
+            fetchUsers();
+            userModal.hide();
+          })
+          .catch((error) => console.error('Error saving user:', error));
+      });
+
+      document.querySelector('#usersTable').addEventListener('click', (e) => {
+        if (e.target.classList.contains('edit-btn')) {
+          const userId = e.target.dataset.id;
+          fetch(`${API_URL}/${userId}`)
+            .then((response) => response.json())
+            .then((user) => {
+              resetForm();
+              userIdField.value = user.idUsuario;
+              document.getElementById('nombre').value = user.nombre;
+              document.getElementById('apellidos').value = user.apellidos;
+              document.getElementById('correo').value = user.correo;
+              document.getElementById('telefono').value = user.telefono;
+              document.getElementById('direccion').value = user.direccion;
+              document.getElementById('password').required = false;
+
+              modalLabel.textContent = 'Editar Usuario';
+              submitBtn.textContent = 'Actualizar';
+              userModal.show();
+            })
+            .catch((error) => console.error('Error fetching user:', error));
+        }
+
+        if (e.target.classList.contains('delete-btn')) {
+          const userId = e.target.dataset.id;
+          if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+            fetch(`${API_URL}/${userId}`, { method: 'DELETE' })
+              .then(() => fetchUsers())
+              .catch((error) => console.error('Error deleting user:', error));
+          }
+        }
+      });
+
+      fetchUsers();
     })();
   </script>
 </div>
