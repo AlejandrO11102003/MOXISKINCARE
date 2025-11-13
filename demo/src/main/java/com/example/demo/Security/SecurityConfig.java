@@ -12,29 +12,28 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/js/**","/css/**", "/img/**", "/login", "/logout", "/").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin((form) -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/usuarios", true)
-                .failureUrl("/login?error")
-                .permitAll()
-            )
-            .logout((logout) -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .permitAll());
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests((requests) -> requests
+            .requestMatchers("/js/**", "/css/**", "/img/**", "/login", "/logout", "/").permitAll()
+            .anyRequest().authenticated())
+        .formLogin((form) -> form
+            .loginPage("/login")
+            .defaultSuccessUrl("/usuarios", true)
+            .failureUrl("/login?error")
+            .permitAll())
+        .logout((logout) -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+            .permitAll());
+    return http.build();
+  }
+  // sx
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }
