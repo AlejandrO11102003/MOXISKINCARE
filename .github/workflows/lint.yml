@@ -11,6 +11,9 @@ jobs:
   checkstyle:
     name: Checkstyle
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo
     
     steps:
       - name: Checkout código
