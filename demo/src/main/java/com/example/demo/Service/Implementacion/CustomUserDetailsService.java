@@ -17,22 +17,22 @@ import com.example.demo.Repository.UsuarioRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private static final Logger Log = LoggerFactory.getLogger(CustomUserDetailsService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
   @Autowired
   private UsuarioRepository usuarioRepository;
 
   @Override
   public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-    Log.info("Intentando autenticar al usuario con correo: {}", correo);
+    LOG.info("Intentando autenticar al usuario con correo: {}", correo);
 
     Usuario usuario = usuarioRepository.findByCorreo(correo)
         .orElseThrow(() -> {
-          Log.warn("Usuario no encontrado con correo: {}", correo);
+          LOG.warn("Usuario no encontrado con correo: {}", correo);
           return new UsernameNotFoundException("Usuario no encontrado con correo: " + correo);
         });
 
-    Log.info("Usuario encontrado: {}. Procediendo con la autenticación.", usuario.getCorreo());
+    LOG.info("Usuario encontrado: {}. Procediendo con la autenticación.", usuario.getCorreo());
     return new org.springframework.security.core.userdetails.User(
         usuario.getCorreo(),
         usuario.getPassword(),
