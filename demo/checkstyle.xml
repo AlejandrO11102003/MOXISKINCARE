@@ -8,7 +8,6 @@
     <property name="severity" value="error"/>
     <property name="fileExtensions" value="java"/>
 
-    <!-- Longitud de líneas (fuera de TreeWalker) -->
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
@@ -18,12 +17,10 @@
     </module>
 
     <module name="TreeWalker">
-        <!-- Imports -->
         <module name="AvoidStarImport"/>
         <module name="UnusedImports"/>
         <module name="RedundantImport"/>
         
-        <!-- Convenciones de nombres -->
         <module name="ConstantName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
@@ -32,27 +29,22 @@
         <module name="ParameterName"/>
         <module name="TypeName"/>
         
-        <!-- Longitud de métodos -->
         <module name="MethodLength">
             <property name="max" value="50"/>
         </module>
         
-        <!-- Espacios en blanco -->
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
         
-        <!-- Llaves -->
         <module name="LeftCurly"/>
         <module name="RightCurly"/>
         <module name="NeedBraces"/>
         
-        <!-- Buenas prácticas -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         
-        <!-- Modificadores -->
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
     </module>
