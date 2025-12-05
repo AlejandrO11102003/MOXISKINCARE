@@ -2,7 +2,7 @@ services:
   - type: web
     name: moxiskincare
     env: docker
-    rootDir: demo
+    dockerfilePath: demo/Dockerfile
     plan: free
     envVars:
       - key: PORT
