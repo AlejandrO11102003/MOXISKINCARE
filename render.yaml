@@ -3,7 +3,7 @@ services:
     name: moxiskincare
     env: docker
     rootDir: .
-    dockerfilePath: demo/Dockerfile
+    dockerfilePath: ./demo/Dockerfile
     plan: free
     envVars:
       - key: PORT
