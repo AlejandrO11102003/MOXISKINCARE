@@ -2,6 +2,7 @@ services:
   - type: web
     name: moxiskincare
     env: docker
+    rootDir: .
     dockerfilePath: demo/Dockerfile
     plan: free
     envVars:
