@@ -1,0 +1,11 @@
+POST https://moxiskincare.onrender.com/usuario
+Content-Type: application/json
+
+{
+    "nombre": "Alejandro",
+    "apellidos": "Castillo Jara",
+    "correo": "alejandrocastillojara30@gmail.com",
+    "password": "1234",
+    "telefono": "981142779",
+    "direccion": "Jorge Chavez"
+}
