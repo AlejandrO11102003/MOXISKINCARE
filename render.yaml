@@ -2,15 +2,12 @@ services:
   - type: web
     name: moxiskincare
     env: docker
-    rootDir: .
-    dockerfilePath: ./demo/Dockerfile
+    dockerfilePath: demo/Dockerfile
     plan: free
     envVars:
-      - key: PORT
-        value: "8080"
-      - key: MYSQL_URL
-        value: "jdbc:mysql://mysql-378386e7-utp-7ece.g.aivencloud.com:27025/defaultdb?ssl-mode=REQUIRED"
-      - key: MYSQL_USERNAME
-        value: "avnadmin"
-      - key: MYSQL_PASSWORD
-        value: "AVNS_Dye1oqZxvppeogu9GU|v"
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://mysql-378386e7-utp-7ece.g.aivencloud.com:27025/defaultdb?ssl-mode=REQUIRED&allowPublicKeyRetrieval=true
+      - key: SPRING_DATASOURCE_USERNAME
+        value: avnadmin
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: S
