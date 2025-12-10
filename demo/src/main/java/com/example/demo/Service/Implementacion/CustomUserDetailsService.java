@@ -33,9 +33,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         });
 
     LOG.info("Usuario encontrado: {}. Procediendo con la autenticación.", usuario.getCorreo());
-    return new org.springframework.security.core.userdetails.User(
+    return new com.example.demo.Security.CustomUserDetails(
         usuario.getCorreo(),
         usuario.getPassword(),
-        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
+        usuario.getNombre());
   }
 }
